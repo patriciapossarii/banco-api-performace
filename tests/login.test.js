@@ -1,8 +1,8 @@
 import http from 'k6/http';
-import { sleep } from 'k6';
+import { sleep, check } from 'k6';
 
 export const options = {
-    iterations: 10,
+    iterations: 1,
 };
 
 
@@ -20,7 +20,14 @@ export default function () {
         },
     };
 
-    const resposta = http.post(url, payload, params);
+    const res = http.post(url, payload, params);
+
+    check(res, {
+        'Validar que Status Code é 200': (r) => r.status === 200,
+        'Validar que o Token é string': (r) => typeof (r.json().token) == 'string'
+    })
+
+    sleep(1)
 
 
 }
