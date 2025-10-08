@@ -35,3 +35,6 @@ Basta copiar e colar o link no navegador enquanto o teste estiver rodando para a
 
 📄 Após o teste, será gerado o arquivo html-report.html com um relatório completo que pode ser aberto no navegador.
 
+
+### 4. Rodar o teste transferências:
+`k6 run tests/transferencias.test.js -e BASE_URL=http://localhost:3000`
