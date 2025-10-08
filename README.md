@@ -1,40 +1,92 @@
-# Teste de Performance com K6
+# Testes de Performance da API do Banco com K6
 
-Este repositório contém testes de performance utilizando o [K6](https://k6.io/), uma ferramenta moderna e de código aberto para teste de carga e performance.
+Repositório com testes de performance automatizados desenvolvidos com a ferramenta [Grafana K6](https://k6.io/) e escritos em JavaScript, voltados para a API do sistema bancário.
 
-## 📂 Estrutura do Projeto
+🔗 Repositório: [github.com/juliodelimas/banco-api-performance](https://github.com/juliodelimas/banco-api-performance)
 
-tests/
-└── login.test.js # Script de teste de login
+---
 
-bash
-Copiar código
+## 📌 Introdução
 
-## ✅ Pré-requisitos
+Este projeto tem como objetivo simular diferentes cargas e cenários de uso para a API do banco, avaliando seu desempenho e identificando possíveis gargalos. Os testes são escritos com foco em modularidade, organização por contexto e reutilização de modelos de dados.
 
-- Ter o [K6](https://k6.io/docs/getting-started/installation/) instalado na sua máquina
+---
 
-## ▶️ Como Executar os Testes
+## ⚙️ Tecnologias Utilizadas
 
-### 1. Rodar o teste normalmente:
+- [K6](https://k6.io/) – Ferramenta open source de testes de carga e performance.
+- JavaScript (ES6)
+- [GJSON](https://github.com/tidwall/gjson) – Para extração de dados em respostas JSON.
+- Variáveis de ambiente para configuração dinâmica (ex: `BASE_URL`).
 
-`k6 run tests/login.test.js`
+---
 
-### 2. Rodar o teste com Web Dashboard em tempo real:
+## 📁 Estrutura do Repositório
 
+```
+banco-api-performance/
+├── fixtures/               # Dados de entrada para os testes (ex: usuários, payloads)
+├── helpers/            # Funções utilitárias reutilizáveis para interação com a API
+├── tests/              # Casos de teste organizados por módulo da API
+├── utils /              # Funções utilitárias reutilizáveis
+├── config/        # Arquivos de configuração de variáveis de ambiente
+└── README.md           # Este documento
+```
 
-`K6_WEB_DASHBOARD=true k6 run tests/login.test.js`
+---
 
-🔗 Atenção: Durante a execução, será gerado um link no terminal com o nome "Web Dashboard".
-Basta copiar e colar o link no navegador enquanto o teste estiver rodando para acompanhar os resultados em tempo real.
+## 🗂️ Objetivo de Cada Grupo de Arquivos
 
-### 3. Rodar o teste e gerar um relatório em HTML:
+- **`fixtures/`**: Dados de entrada para os testes (ex: usuários, payloads).
+- **`helpers/`**: Funções utilitárias reutilizáveis para interação com a API.
+- **`tests/`**: Casos de teste organizados por módulo da API
+- **`utils/`**: Funções utilitárias reutilizáveis.
+- **`config/`**: Arquivos de configuração de variáveis de ambiente
 
+---
 
-`K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run tests/login.test.js`
+## 💻 Instalação e Execução
 
-📄 Após o teste, será gerado o arquivo html-report.html com um relatório completo que pode ser aberto no navegador.
+### 1. Clone o Repositório
 
+```bash
+git clone https://github.com/patriciapossarii/banco-api-performace.git
+cd banco-api-performance
+```
 
-### 4. Rodar o teste transferências:
-`k6 run tests/transferencias.test.js -e BASE_URL=http://localhost:3000`
+### 2. Configure as Variáveis de Ambiente
+
+Altere o arquivo `config.local.json` e defina a URL base da API a ser testada:
+
+```json
+{
+    "baseUrl": "http://localhost:3000"
+}
+```
+
+> 💡 Essas variáveis serão usada dinamicamente nos testes para montar as requisições.
+
+### 3. Execute um Teste
+
+```bash
+k6 run tests/login.test.js
+```
+
+Certifique-se de passar a variável de ambiente `BASE_URL`, caso não esteja usando um `config.local.json` ou uma abordagem de carregamento automático:
+
+```bash
+k6 run tests/autenticacao/login.test.js -e BASE_URL=http://localhost:3000
+```
+
+### 4. Acompanhamento em Tempo Real + Exportação de Relatório
+
+Você pode ativar o modo dashboard do K6 e exportar o relatório ao final do teste:
+
+```bash
+K6_WEB_DASHBOARD=true \
+K6_WEB_DASHBOARD_EXPORT=html-report.html \
+k6 run tests/autenticacao/login.test.js \
+-e BASE_URL=http://localhost:3000
+```
+
+Após a execução, o relatório estará salvo como `html-report.html`.
