@@ -67,20 +67,29 @@ Altere o arquivo `config.local.json` e defina a URL base da API a ser testada:
 > 💡 Essas variáveis serão usada dinamicamente nos testes para montar as requisições.
 
 ### 3. Execute um Teste
-
+ Rodar o teste login:
 ```bash
-k6 run tests/login.test.js
+k6 run tests/login.test.js -e BASE_URL=http://localhost:3000
 ```
 
-Certifique-se de passar a variável de ambiente `BASE_URL`, caso não esteja usando um `config.local.json` ou uma abordagem de carregamento automático:
 
+
+
+ Rodar o teste transferências:
 ```bash
-k6 run tests/autenticacao/login.test.js -e BASE_URL=http://localhost:3000
+k6 run tests/transferencias.test.js -e BASE_URL=http://localhost:3000
 ```
+
+Observação: Certifique-se de passar a variável de ambiente `BASE_URL`, caso não esteja usando um `config.local.json` ou uma abordagem de carregamento automático.
 
 ### 4. Acompanhamento em Tempo Real + Exportação de Relatório
 
 Você pode ativar o modo dashboard do K6 e exportar o relatório ao final do teste:
+* Rodar o teste e gerar um relatório em HTML:
+
+`K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run tests/login.test.js`
+
+📄 Após o teste, será gerado o arquivo html-report.html com um relatório completo que pode ser aberto no navegador.
 
 ```bash
 K6_WEB_DASHBOARD=true \
